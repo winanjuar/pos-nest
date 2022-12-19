@@ -1,3 +1,4 @@
+import { ApiProperty } from '@nestjs/swagger';
 import {
   IsEmail,
   IsOptional,
@@ -10,24 +11,28 @@ import { IsUnique } from 'src/etc/validator/unique-validator';
 import { User } from '../entities/user.entity';
 
 export class UserDto {
-  @IsOptional()
+  @ApiProperty({ required: true })
   @IsExist([User, 'id'])
-  id?: number;
+  id: number;
 
+  @ApiProperty({ required: true })
   @IsString()
   @MaxLength(200)
   nama_user: string;
 
+  @ApiProperty({ required: true })
   @IsEmail()
   @IsUnique([User, 'email'])
   email: string;
 
+  @ApiProperty({ required: true })
   @IsString()
   @MinLength(6)
   @MaxLength(50)
   @IsUnique([User, 'username'])
   username: string;
 
+  @ApiProperty({ required: true })
   @IsString()
   @MinLength(8)
   @MaxLength(32)
