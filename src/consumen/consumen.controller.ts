@@ -1,34 +1,55 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Patch,
+  Param,
+  Delete,
+  UseGuards,
+  ParseIntPipe,
+} from '@nestjs/common';
+import { ApiBearerAuth, ApiBody, ApiTags } from '@nestjs/swagger';
+import { JwtGuard } from 'src/auth/jwt.guard';
+import { InjectUser } from 'src/etc/decorator/inject-user.decorator';
 import { ConsumenService } from './consumen.service';
-import { CreateConsumanDto } from './dto/create-consuman.dto';
-import { UpdateConsumanDto } from './dto/update-consuman.dto';
+import { ConsumenIdDto } from './dto/consumen-id.dto';
+import { CreateConsumenDto } from './dto/create-consumen.dto';
+import { UpdateConsumenDto } from './dto/update-consumen.dto';
 
+@ApiTags('Consumen')
+@ApiBearerAuth()
+@UseGuards(JwtGuard)
 @Controller('consumen')
 export class ConsumenController {
   constructor(private readonly consumenService: ConsumenService) {}
 
+  @ApiBody({ type: CreateConsumenDto })
   @Post()
-  create(@Body() createConsumanDto: CreateConsumanDto) {
-    return this.consumenService.create(createConsumanDto);
+  async create(@InjectUser() createConsumenDto: CreateConsumenDto) {
+    return await this.consumenService.create(createConsumenDto);
   }
 
   @Get()
-  findAll() {
-    return this.consumenService.findAll();
+  async findAll() {
+    return await this.consumenService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.consumenService.findOne(+id);
+  async findOne(@Param('id', ParseIntPipe) id: number) {
+    return await this.consumenService.findOne(id);
   }
 
+  @ApiBody({ type: UpdateConsumenDto })
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateConsumanDto: UpdateConsumanDto) {
-    return this.consumenService.update(+id, updateConsumanDto);
+  async update(
+    @Param('id', ParseIntPipe) id: number,
+    @InjectUser() updateConsumenDto: UpdateConsumenDto,
+  ) {
+    return await this.consumenService.update(+id, updateConsumenDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.consumenService.remove(+id);
+  async remove(@Param() consumen: ConsumenIdDto) {
+    return await this.consumenService.remove(consumen.id);
   }
 }

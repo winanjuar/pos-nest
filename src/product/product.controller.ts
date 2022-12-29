@@ -19,6 +19,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { InjectUser } from 'src/etc/decorator/inject-user.decorator';
 import { extname } from 'path';
+import { ProductIdDto } from './dto/product-id.dto';
 
 @ApiTags('Product')
 @ApiBearerAuth()
@@ -85,7 +86,7 @@ export class ProductController {
   }
 
   @Delete(':id')
-  async remove(@Param('id', ParseIntPipe) id: number) {
-    return await this.productService.remove(id);
+  async remove(@Param() product: ProductIdDto) {
+    return await this.productService.remove(product.id);
   }
 }

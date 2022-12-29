@@ -1,26 +1,35 @@
 import { Injectable } from '@nestjs/common';
-import { CreateConsumanDto } from './dto/create-consuman.dto';
-import { UpdateConsumanDto } from './dto/update-consuman.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { CreateConsumenDto } from './dto/create-consumen.dto';
+import { UpdateConsumenDto } from './dto/update-consumen.dto';
+import { Consumen } from './entities/consumen.entity';
 
 @Injectable()
 export class ConsumenService {
-  create(createConsumanDto: CreateConsumanDto) {
-    return 'This action adds a new consuman';
+  constructor(
+    @InjectRepository(Consumen) private consumenRepo: Repository<Consumen>,
+  ) {}
+
+  async create(createConsumenDto: CreateConsumenDto) {
+    return await this.consumenRepo.save(createConsumenDto);
   }
 
-  findAll() {
-    return `This action returns all consumen`;
+  async findAll() {
+    return await this.consumenRepo.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} consuman`;
+  async findOne(id: number) {
+    return await this.consumenRepo.findOne({ where: { id } });
   }
 
-  update(id: number, updateConsumanDto: UpdateConsumanDto) {
-    return `This action updates a #${id} consuman`;
+  async update(id: number, updateConsumenDto: UpdateConsumenDto) {
+    const consumen = await this.findOne(id);
+    return await this.consumenRepo.save({ ...consumen, ...updateConsumenDto });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} consuman`;
+  async remove(id: number) {
+    const consumen = await this.findOne(id);
+    return await this.consumenRepo.remove(consumen);
   }
 }

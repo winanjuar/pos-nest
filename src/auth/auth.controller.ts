@@ -29,7 +29,6 @@ export class AuthController {
       authDto.username,
       authDto.password,
     );
-
     return this.authService.generateToken({ id: user.id });
   }
 }
