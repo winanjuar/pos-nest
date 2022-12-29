@@ -7,12 +7,14 @@ import { UserModule } from './user/user.module';
 import { dataSourceOptions } from './config/data-source.config';
 import { UniqueValidator } from './etc/validator/unique-validator';
 import { ExistValidator } from './etc/validator/exist-validator';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
     TypeOrmModule.forRoot(dataSourceOptions),
     UserModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService, UniqueValidator, ExistValidator],
