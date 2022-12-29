@@ -16,7 +16,7 @@ export class ConsumenService {
   }
 
   async findAll() {
-    return await this.consumenRepo.find();
+    return await this.consumenRepo.find({ relations: ['user'] });
   }
 
   async findOne(id: number) {

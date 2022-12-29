@@ -1,3 +1,4 @@
+import { Account } from 'src/account/entities/account.entity';
 import { Consumen } from 'src/consumen/entities/consumen.entity';
 import { Product } from 'src/product/entities/product.entity';
 import {
@@ -37,4 +38,7 @@ export class User {
 
   @OneToMany(() => Consumen, (consumen) => consumen.id)
   consumens: Consumen;
+
+  @OneToMany(() => Account, (account) => account.id)
+  accounts: Account;
 }

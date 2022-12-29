@@ -1,34 +1,55 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Patch,
+  Param,
+  Delete,
+  UseGuards,
+  ParseIntPipe,
+} from '@nestjs/common';
+import { ApiBearerAuth, ApiBody, ApiTags } from '@nestjs/swagger';
+import { JwtGuard } from 'src/auth/jwt.guard';
+import { InjectUser } from 'src/etc/decorator/inject-user.decorator';
 import { AccountService } from './account.service';
+import { AccountIdDto } from './dto/account-id.dto';
 import { CreateAccountDto } from './dto/create-account.dto';
 import { UpdateAccountDto } from './dto/update-account.dto';
 
+@ApiTags('Account')
+@ApiBearerAuth()
+@UseGuards(JwtGuard)
 @Controller('account')
 export class AccountController {
   constructor(private readonly accountService: AccountService) {}
 
+  @ApiBody({ type: CreateAccountDto })
   @Post()
-  create(@Body() createAccountDto: CreateAccountDto) {
-    return this.accountService.create(createAccountDto);
+  async create(@InjectUser() createAccountDto: CreateAccountDto) {
+    return await this.accountService.create(createAccountDto);
   }
 
   @Get()
-  findAll() {
-    return this.accountService.findAll();
+  async findAll() {
+    return await this.accountService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.accountService.findOne(+id);
+  async findOne(@Param('id', ParseIntPipe) id: number) {
+    return await this.accountService.findOne(id);
   }
 
+  @ApiBody({ type: UpdateAccountDto })
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateAccountDto: UpdateAccountDto) {
-    return this.accountService.update(+id, updateAccountDto);
+  async update(
+    @Param('id', ParseIntPipe) id: number,
+    @InjectUser() updateAccountDto: UpdateAccountDto,
+  ) {
+    return await this.accountService.update(id, updateAccountDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.accountService.remove(+id);
+  async remove(@Param() account: AccountIdDto) {
+    return await this.accountService.remove(account.id);
   }
 }

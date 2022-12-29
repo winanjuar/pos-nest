@@ -3,6 +3,7 @@ import { config } from 'dotenv';
 import { User } from 'src/user/entities/user.entity';
 import { Product } from 'src/product/entities/product.entity';
 import { Consumen } from 'src/consumen/entities/consumen.entity';
+import { Account } from 'src/account/entities/account.entity';
 config();
 
 export const dataSourceOptions: DataSourceOptions = {
@@ -13,7 +14,7 @@ export const dataSourceOptions: DataSourceOptions = {
   password: process.env.MYSQL_PASS,
   database: process.env.MYSQL_DB,
   // entities: [__dirname + '/../**/*.entity.{js,ts}'],
-  entities: [User, Product, Consumen],
+  entities: [User, Product, Consumen, Account],
   synchronize: true,
 };
 

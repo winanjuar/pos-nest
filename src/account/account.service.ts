@@ -1,26 +1,35 @@
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import { CreateAccountDto } from './dto/create-account.dto';
 import { UpdateAccountDto } from './dto/update-account.dto';
+import { Account } from './entities/account.entity';
 
 @Injectable()
 export class AccountService {
-  create(createAccountDto: CreateAccountDto) {
-    return 'This action adds a new account';
+  constructor(
+    @InjectRepository(Account) private accountRepo: Repository<Account>,
+  ) {}
+
+  async create(createAccountDto: CreateAccountDto) {
+    return await this.accountRepo.save(createAccountDto);
   }
 
-  findAll() {
-    return `This action returns all account`;
+  async findAll() {
+    return await this.accountRepo.find({ relations: ['user'] });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} account`;
+  async findOne(id: number) {
+    return await this.accountRepo.findOne({ where: { id } });
   }
 
-  update(id: number, updateAccountDto: UpdateAccountDto) {
-    return `This action updates a #${id} account`;
+  async update(id: number, updateAccountDto: UpdateAccountDto) {
+    const account = await this.findOne(id);
+    return await this.accountRepo.save({ ...account, ...updateAccountDto });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} account`;
+  async remove(id: number) {
+    const account = await this.findOne(id);
+    return await this.accountRepo.remove(account);
   }
 }
