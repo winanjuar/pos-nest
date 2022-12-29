@@ -12,7 +12,7 @@ export class UserDto {
   @ApiProperty({ required: true })
   @IsString()
   @MaxLength(200)
-  nama_user: string;
+  name: string;
 
   @ApiProperty({ required: true })
   @IsEmail()

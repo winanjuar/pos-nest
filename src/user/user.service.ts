@@ -24,7 +24,10 @@ export class UserService {
   }
 
   async findUsername(username: string): Promise<User> {
-    return await this.userRepo.findOne({ where: { username } });
+    return await this.userRepo.findOne({
+      select: ['username', 'password'],
+      where: { username },
+    });
   }
 
   async update(id: number, updateUserDto: UpdateUserDto): Promise<User> {
@@ -36,7 +39,7 @@ export class UserService {
   }
 
   async remove(id: number): Promise<User> {
-    const user = await this.userRepo.findOne({ where: { id } });
+    const user = await this.findOne(id);
     return this.userRepo.remove(user);
   }
 

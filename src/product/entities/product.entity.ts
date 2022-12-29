@@ -1,29 +1,35 @@
-import { Product } from 'src/product/entities/product.entity';
+import { User } from 'src/user/entities/user.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
-  OneToMany,
+  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 
 @Entity()
-export class User {
+export class Product {
   @PrimaryGeneratedColumn()
   id: number;
+
+  @Column()
+  barcode: string;
 
   @Column()
   name: string;
 
   @Column()
-  email: string;
+  description: string;
 
   @Column()
-  username: string;
+  buy_price: number;
 
-  @Column({ select: false })
-  password: string;
+  @Column()
+  sell_price: number;
+
+  @Column()
+  photo: string;
 
   @CreateDateColumn()
   create_at: Date;
@@ -31,6 +37,6 @@ export class User {
   @UpdateDateColumn()
   update_at: Date;
 
-  @OneToMany(() => Product, (product) => product.id)
-  products: Product;
+  @ManyToOne(() => User, (user) => user.id)
+  user: User;
 }

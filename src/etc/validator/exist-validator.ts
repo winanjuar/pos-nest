@@ -14,8 +14,7 @@ export class ExistValidator implements ValidatorConstraintInterface {
   async validate(value: any, args: ValidationArguments): Promise<boolean> {
     const targetEntity = args.constraints[0];
     const targetColumn = args.constraints[1];
-    const targetValue = args.value;
-    const criteria = { [targetColumn]: targetValue };
+    const criteria = { [targetColumn]: value };
     const checkExist = await dataSource
       .getRepository(targetEntity)
       .findOne({ where: criteria });

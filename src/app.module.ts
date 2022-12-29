@@ -8,6 +8,9 @@ import { dataSourceOptions } from './config/data-source.config';
 import { UniqueValidator } from './etc/validator/unique-validator';
 import { ExistValidator } from './etc/validator/exist-validator';
 import { AuthModule } from './auth/auth.module';
+import { ProductModule } from './product/product.module';
+import { ConsumenModule } from './consumen/consumen.module';
+import { AccountModule } from './account/account.module';
 
 @Module({
   imports: [
@@ -15,6 +18,9 @@ import { AuthModule } from './auth/auth.module';
     TypeOrmModule.forRoot(dataSourceOptions),
     UserModule,
     AuthModule,
+    ProductModule,
+    ConsumenModule,
+    AccountModule,
   ],
   controllers: [AppController],
   providers: [AppService, UniqueValidator, ExistValidator],

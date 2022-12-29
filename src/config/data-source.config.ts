@@ -1,5 +1,7 @@
 import { DataSource, DataSourceOptions } from 'typeorm';
 import { config } from 'dotenv';
+import { User } from 'src/user/entities/user.entity';
+import { Product } from 'src/product/entities/product.entity';
 config();
 
 export const dataSourceOptions: DataSourceOptions = {
@@ -9,7 +11,8 @@ export const dataSourceOptions: DataSourceOptions = {
   username: process.env.MYSQL_USER,
   password: process.env.MYSQL_PASS,
   database: process.env.MYSQL_DB,
-  entities: [__dirname + '/../**/*.entity.{js,ts}'],
+  // entities: [__dirname + '/../**/*.entity.{js,ts}'],
+  entities: [User, Product],
   synchronize: true,
 };
 
