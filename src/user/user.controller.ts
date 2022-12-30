@@ -16,8 +16,6 @@ import { UserIdDto } from './dto/user-id.dto';
 import { JwtGuard } from 'src/auth/jwt.guard';
 
 @ApiTags('User')
-@ApiBearerAuth()
-@UseGuards(JwtGuard)
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
@@ -27,21 +25,29 @@ export class UserController {
     return await this.userService.create(createUserDto);
   }
 
+  @ApiBearerAuth()
+  @UseGuards(JwtGuard)
   @Get()
   async findAll() {
     return await this.userService.findAll();
   }
 
+  @ApiBearerAuth()
+  @UseGuards(JwtGuard)
   @Get(':id')
   async findOne(@Param('id') id: number) {
     return await this.userService.findOne(id);
   }
 
+  @ApiBearerAuth()
+  @UseGuards(JwtGuard)
   @Patch(':id')
   async update(@Param('id') id: number, @Body() updateUserDto: UpdateUserDto) {
     return await this.userService.update(id, updateUserDto);
   }
 
+  @ApiBearerAuth()
+  @UseGuards(JwtGuard)
   @Delete(':id')
   async remove(@Param() userIdDto: UserIdDto) {
     return await this.userService.remove(userIdDto.id);

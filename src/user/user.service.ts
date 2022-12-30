@@ -16,11 +16,15 @@ export class UserService {
   }
 
   async findAll(): Promise<User[]> {
-    return await this.userRepo.find();
+    return await this.userRepo.find({
+      relations: ['products'],
+    });
   }
 
   async findOne(id: number): Promise<User> {
-    return await this.userRepo.findOne({ where: { id } });
+    return await this.userRepo.findOne({
+      where: { id },
+    });
   }
 
   async findUsername(username: string): Promise<User> {

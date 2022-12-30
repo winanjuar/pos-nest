@@ -33,12 +33,12 @@ export class User {
   @UpdateDateColumn()
   update_at: Date;
 
-  @OneToMany(() => Product, (product) => product.id)
-  products: Product;
+  @OneToMany(() => Product, (product) => product.user)
+  products: Product[];
 
-  @OneToMany(() => Consumen, (consumen) => consumen.id)
-  consumens: Consumen;
+  @OneToMany(() => Consumen, (consumen) => consumen.user)
+  consumens: Consumen[];
 
-  @OneToMany(() => Account, (account) => account.id)
-  accounts: Account;
+  @OneToMany(() => Account, (account) => account.user)
+  accounts: Account[];
 }

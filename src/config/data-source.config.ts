@@ -1,5 +1,8 @@
 import { DataSource, DataSourceOptions } from 'typeorm';
 import { config } from 'dotenv';
+import { Sell } from 'src/sell/entities/sell.entity';
+import { SellItem } from 'src/sell/entities/sell-item.entity';
+import { SellPayment } from 'src/sell/entities/sell-payment.entity';
 import { User } from 'src/user/entities/user.entity';
 import { Product } from 'src/product/entities/product.entity';
 import { Consumen } from 'src/consumen/entities/consumen.entity';
@@ -14,7 +17,7 @@ export const dataSourceOptions: DataSourceOptions = {
   password: process.env.MYSQL_PASS,
   database: process.env.MYSQL_DB,
   // entities: [__dirname + '/../**/*.entity.{js,ts}'],
-  entities: [User, Product, Consumen, Account],
+  entities: [User, Product, Consumen, Account, Sell, SellItem, SellPayment],
   synchronize: true,
 };
 

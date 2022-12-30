@@ -11,6 +11,7 @@ import { AuthModule } from './auth/auth.module';
 import { ProductModule } from './product/product.module';
 import { ConsumenModule } from './consumen/consumen.module';
 import { AccountModule } from './account/account.module';
+import { SellModule } from './sell/sell.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { AccountModule } from './account/account.module';
     ProductModule,
     ConsumenModule,
     AccountModule,
+    SellModule,
   ],
   controllers: [AppController],
   providers: [AppService, UniqueValidator, ExistValidator],
