@@ -1,22 +1,27 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { PageService } from 'src/etc/service/page.service';
 import { Repository } from 'typeorm';
 import { CreateAccountDto } from './dto/create-account.dto';
+import { PageFilterAccountDto } from './dto/page-filter-account.dto';
 import { UpdateAccountDto } from './dto/update-account.dto';
 import { Account } from './entities/account.entity';
 
 @Injectable()
-export class AccountService {
+export class AccountService extends PageService {
   constructor(
     @InjectRepository(Account) private accountRepo: Repository<Account>,
-  ) {}
+  ) {
+    super();
+  }
 
   async create(createAccountDto: CreateAccountDto) {
     return await this.accountRepo.save(createAccountDto);
   }
 
-  async findAll() {
-    return await this.accountRepo.find({ relations: ['user'] });
+  async findAll(pageFilter: PageFilterAccountDto) {
+    // return await this.accountRepo.find({ relations: ['user'] });
+    return await this.generatePage(pageFilter, this.accountRepo);
   }
 
   async findOne(id: number) {

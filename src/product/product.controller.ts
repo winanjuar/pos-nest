@@ -9,17 +9,26 @@ import {
   UseGuards,
   UseInterceptors,
   UploadedFile,
+  Query,
 } from '@nestjs/common';
 import { ProductService } from './product.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
-import { ApiBearerAuth, ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiBody,
+  ApiConsumes,
+  ApiOkResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { JwtGuard } from 'src/auth/jwt.guard';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { InjectUser } from 'src/etc/decorator/inject-user.decorator';
 import { extname } from 'path';
 import { ProductIdDto } from './dto/product-id.dto';
+import { ResponseProductDto } from './dto/response-product.dto';
+import { PageFilterProductDto } from './dto/page-filter-product.dto';
 
 @ApiTags('Product')
 @ApiBearerAuth()
@@ -51,8 +60,9 @@ export class ProductController {
   }
 
   @Get()
-  async findAll() {
-    return await this.productService.findAll();
+  @ApiOkResponse({ type: ResponseProductDto })
+  async findAll(@Query() pageFilter: PageFilterProductDto) {
+    return await this.productService.findAll(pageFilter);
   }
 
   @Get(':id')

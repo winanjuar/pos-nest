@@ -6,14 +6,22 @@ import {
   Param,
   Delete,
   UseGuards,
+  Query,
 } from '@nestjs/common';
 import { SellService } from './sell.service';
 import { CreateSellDto } from './dto/create-sell.dto';
 import { UpdateSellDto } from './dto/update-sell.dto';
-import { ApiBearerAuth, ApiBody, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiBody,
+  ApiOkResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { SellProcess } from './sell-process.decorator';
 import { SellIdDto } from './dto/sell-id.dto';
 import { JwtGuard } from 'src/auth/jwt.guard';
+import { PageFilterSellDto } from './dto/page-filter-sell.dto';
+import { ResponseSellDto } from './dto/response-sell.dto';
 
 @ApiTags('Sell')
 @ApiBearerAuth()
@@ -29,8 +37,9 @@ export class SellController {
   }
 
   @Get()
-  findAll() {
-    return this.sellService.findAll();
+  @ApiOkResponse({ type: ResponseSellDto })
+  async findAll(@Query() pageFilter: PageFilterSellDto) {
+    return await this.sellService.findAll(pageFilter);
   }
 
   @Get(':id')

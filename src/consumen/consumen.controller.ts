@@ -7,13 +7,21 @@ import {
   Delete,
   UseGuards,
   ParseIntPipe,
+  Query,
 } from '@nestjs/common';
-import { ApiBearerAuth, ApiBody, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiBody,
+  ApiOkResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { JwtGuard } from 'src/auth/jwt.guard';
 import { InjectUser } from 'src/etc/decorator/inject-user.decorator';
 import { ConsumenService } from './consumen.service';
 import { ConsumenIdDto } from './dto/consumen-id.dto';
 import { CreateConsumenDto } from './dto/create-consumen.dto';
+import { PageFilterConsumenDto } from './dto/page-filter-consumen.dto';
+import { ResponseConsumenDto } from './dto/response-consumen.dto';
 import { UpdateConsumenDto } from './dto/update-consumen.dto';
 
 @ApiTags('Consumen')
@@ -30,8 +38,9 @@ export class ConsumenController {
   }
 
   @Get()
-  async findAll() {
-    return await this.consumenService.findAll();
+  @ApiOkResponse({ type: ResponseConsumenDto })
+  async findAll(@Query() pageFilter: PageFilterConsumenDto) {
+    return await this.consumenService.findAll(pageFilter);
   }
 
   @Get(':id')

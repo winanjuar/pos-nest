@@ -1,20 +1,33 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { PageService } from 'src/etc/service/page.service';
 import { Repository } from 'typeorm';
 import { CreateSellDto } from './dto/create-sell.dto';
+import { PageFilterSellDto } from './dto/page-filter-sell.dto';
 import { UpdateSellDto } from './dto/update-sell.dto';
 import { Sell } from './entities/sell.entity';
 
 @Injectable()
-export class SellService {
-  constructor(@InjectRepository(Sell) private sellRepo: Repository<Sell>) {}
+export class SellService extends PageService {
+  constructor(@InjectRepository(Sell) private sellRepo: Repository<Sell>) {
+    super();
+  }
 
   async create(createSellDto: CreateSellDto) {
     return await this.sellRepo.save(createSellDto);
   }
 
-  async findAll() {
-    return await this.sellRepo.find({ relations: ['user', 'consumen'] });
+  async findAll(pageFilter: PageFilterSellDto) {
+    // return await this.sellRepo.find({ relations: ['user', 'consumen'] });
+    return await this.generatePage(pageFilter, this.sellRepo, {
+      relations: [
+        'consumen',
+        'items',
+        'items.product',
+        'payments',
+        'payments.account',
+      ],
+    });
   }
 
   async findOne(id: number) {

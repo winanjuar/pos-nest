@@ -12,6 +12,7 @@ import { ProductModule } from './product/product.module';
 import { ConsumenModule } from './consumen/consumen.module';
 import { AccountModule } from './account/account.module';
 import { SellModule } from './sell/sell.module';
+import { PageService } from './etc/service/page.service';
 
 @Module({
   imports: [
@@ -25,6 +26,6 @@ import { SellModule } from './sell/sell.module';
     SellModule,
   ],
   controllers: [AppController],
-  providers: [AppService, UniqueValidator, ExistValidator],
+  providers: [AppService, UniqueValidator, ExistValidator, PageService],
 })
 export class AppModule {}

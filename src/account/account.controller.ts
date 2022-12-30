@@ -7,13 +7,21 @@ import {
   Delete,
   UseGuards,
   ParseIntPipe,
+  Query,
 } from '@nestjs/common';
-import { ApiBearerAuth, ApiBody, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiBody,
+  ApiOkResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { JwtGuard } from 'src/auth/jwt.guard';
 import { InjectUser } from 'src/etc/decorator/inject-user.decorator';
 import { AccountService } from './account.service';
 import { AccountIdDto } from './dto/account-id.dto';
 import { CreateAccountDto } from './dto/create-account.dto';
+import { PageFilterAccountDto } from './dto/page-filter-account.dto';
+import { ResponseAccountDto } from './dto/response-account.dto';
 import { UpdateAccountDto } from './dto/update-account.dto';
 
 @ApiTags('Account')
@@ -29,9 +37,10 @@ export class AccountController {
     return await this.accountService.create(createAccountDto);
   }
 
+  @ApiOkResponse({ type: ResponseAccountDto })
   @Get()
-  async findAll() {
-    return await this.accountService.findAll();
+  async findAll(@Query() pageFilter: PageFilterAccountDto) {
+    return await this.accountService.findAll(pageFilter);
   }
 
   @Get(':id')

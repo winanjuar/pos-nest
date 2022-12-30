@@ -1,22 +1,27 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { PageService } from 'src/etc/service/page.service';
 import { Repository } from 'typeorm';
 import { CreateConsumenDto } from './dto/create-consumen.dto';
+import { PageFilterConsumenDto } from './dto/page-filter-consumen.dto';
 import { UpdateConsumenDto } from './dto/update-consumen.dto';
 import { Consumen } from './entities/consumen.entity';
 
 @Injectable()
-export class ConsumenService {
+export class ConsumenService extends PageService {
   constructor(
     @InjectRepository(Consumen) private consumenRepo: Repository<Consumen>,
-  ) {}
+  ) {
+    super();
+  }
 
   async create(createConsumenDto: CreateConsumenDto) {
     return await this.consumenRepo.save(createConsumenDto);
   }
 
-  async findAll() {
-    return await this.consumenRepo.find({ relations: ['user'] });
+  async findAll(pageFilter: PageFilterConsumenDto) {
+    // return await this.consumenRepo.find({ relations: ['user'] });
+    return await this.generatePage(pageFilter, this.consumenRepo);
   }
 
   async findOne(id: number) {
